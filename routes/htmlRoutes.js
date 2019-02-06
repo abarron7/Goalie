@@ -4,8 +4,15 @@ module.exports = function(app) {
   // Load index page
   app.get("/", function(req, res) {
     db.Users.findAll({}).then(function(dbExamples) {
+      // PASSPORT: checks to see if the user is logged in.  If so then render conditional handlebars via logout render true/false
+      let logout = false;
+      if (req.user) {
+        logout = true;
+      }
       res.render("index", {
         msg: "Welcome!",
+        // PASSPORT: logout will be true or false if user is logged in
+        logout: logout,
         examples: dbExamples
       });
     });
