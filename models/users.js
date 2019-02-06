@@ -1,5 +1,5 @@
-module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define("User", {
+module.exports = function(sequelize, DataTypes) {
+  var User = sequelize.define("User", {
     id: {
       autoIncrement: true,
       primaryKey: true,

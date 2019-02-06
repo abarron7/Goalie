@@ -1,5 +1,5 @@
-const bCrypt = require("bcrypt-nodejs");
-const db = require("../models");
+var bCrypt = require("bcrypt-nodejs");
+var db = require("../models");
 
 // PASSPORT: No need to edit this file unless you want to change from email login to username login
 module.exports = passport => {
