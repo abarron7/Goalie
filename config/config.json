@@ -2,8 +2,8 @@
   "development": {
     "username": "root",
     "password": "root",
-    "port": 8889,
-    "database": "exampledb",
+    "port": 3306,
+    "database": "financialsDB",
     "host": "localhost",
     "dialect": "mysql"
   },
