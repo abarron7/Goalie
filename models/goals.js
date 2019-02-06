@@ -3,14 +3,20 @@ module.exports = function(sequelize, DataTypes) {
     id: { type: DataTypes.INTEGER, primaryKey: true },
     userID: DataTypes.INTEGER,
     g1descr: DataTypes.STRING,
-    g1amount: DataTypes.INTEGER,
-    g1date: DataTypes.STRING,
+    g1amount: DataTypes.FLOAT,
+    g1Wk: DataTypes.STRING,
+    wksWanted: DataTypes.STRING,
+    balance: DataTypes.FLOAT,
     g2descr: DataTypes.STRING,
-    g2amount: DataTypes.INTEGER,
-    g2date: DataTypes.STRING,
+    g2amount: DataTypes.FLOAT,
+    g2Wk: DataTypes.STRING,
+    wksWanted2: DataTypes.STRING,
+    balance2: DataTypes.FLOAT,
     g3descr: DataTypes.STRING,
-    g3amount: DataTypes.INTEGER,
-    g3date: DataTypes.STRING
+    g3amount: DataTypes.FLOAT,
+    g3Wk: DataTypes.STRING,
+    wksWanted3: DataTypes.STRING,
+    balance3: DataTypes.FLOAT
   });
   return Goals;
 };
