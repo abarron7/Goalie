@@ -1,17 +1,12 @@
 require("dotenv").config();
+var express = require("express");
+var exphbs = require("express-handlebars");
 
-// import express
-const express = require("express");
-// import express-handlebars
-const exphbs = require("express-handlebars");
+var db = require("./models");
 
-// import sequelize models
-const db = require("./models");
+var app = express();
+var PORT = process.env.PORT || 3000;
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// PASSPORT: imports passport and express-session used with passport
 const passport = require("passport");
 const session = require("express-session");
 
@@ -20,31 +15,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 
-// PASSPORT: Middleware for Passport
-app.use(
-  session({
-    secret: "wild and crazy guys",
-    resave: true,
-    saveUninitialized: true
+// Handlebars
+app.engine(
+  "handlebars",
+  exphbs({
+    defaultLayout: "main"
   })
 );
-
-// PASSPORT: Initialize passport and the passport session
-app.use(passport.initialize());
-app.use(passport.session());
-
-//Models
-const models = require("./models");
+app.set("view engine", "handlebars");
 
 // Routes
-require("./routes/authRoutes")(app, passport); // PASSPORT: auth routes used with passport
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
-// PASSPORT: load passport strategies
-require("./config/passport.js")(passport, models.user);
-
-const syncOptions = { force: false };
+var syncOptions = { force: false };
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
@@ -53,8 +37,8 @@ if (process.env.NODE_ENV === "test") {
 }
 
 // Starting the server, syncing our models ------------------------------------/
-db.sequelize.sync(syncOptions).then(() => {
-  app.listen(PORT, () => {
+db.sequelize.sync(syncOptions).then(function() {
+  app.listen(PORT, function() {
     console.log(
       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
       PORT,
