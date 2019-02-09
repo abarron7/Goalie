@@ -114,6 +114,7 @@ var handleFormSubmit = function(event) {
       console.log("Running API.saveFinancials(financials)");
       console.log("new financial entry ID is " + x.id);
     });
+
   });
 
   $username.val("");
@@ -141,6 +142,10 @@ var handleDeleteBtnClick = function() {
 $submitBtn.on("click", handleFormSubmit);
 $financialsList.on("click", ".delete", handleDeleteBtnClick);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1b5dcdd5f3e42655f45d84bf9e9ecd2bcdef8a1a
 // Input field
 var $updatebalance = $("#update-balance");
 
@@ -161,6 +166,10 @@ var handleFormSubmit = function(event) {
   //   return;
   // }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1b5dcdd5f3e42655f45d84bf9e9ecd2bcdef8a1a
   API.saveUsers(users).then(function(x) {
     newID = x.id;
     console.log("new user ID is " + newID);
