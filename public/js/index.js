@@ -113,8 +113,8 @@ var handleFormSubmit = function(event) {
     API.saveFinancials(financials).then(function(x) {
       console.log("Running API.saveFinancials(financials)");
       console.log("new financial entry ID is " + x.id);
-      refreshUsers();
     });
+
   });
 
   $username.val("");
@@ -141,3 +141,46 @@ var handleDeleteBtnClick = function() {
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
 $financialsList.on("click", ".delete", handleDeleteBtnClick);
+
+
+// Input field
+var $updatebalance = $("#update-balance");
+
+// Button
+var $submitBtnUpdateBudget = $("#submit-update-budget");
+
+var handleFormSubmit = function(event) {
+  event.preventDefault();
+
+  var newBalance = {
+    balance: $updatebalance.val().trim()
+  };
+
+  console.log("newbal is !!!!!!!!!!!" + newBalance.balance);
+
+  // if (!newBalance) {
+  //   alert("You must enter your username and balance!");
+  //   return;
+  // }
+
+
+  API.saveUsers(users).then(function(x) {
+    newID = x.id;
+    console.log("new user ID is " + newID);
+
+    financials.userid = newID;
+    console.log(financials.userid);
+
+    API.saveFinancials(financials).then(function(x) {
+      console.log("Running API.saveFinancials(financials)");
+      console.log("new financial entry ID is " + x.id);
+      refreshUsers();
+    });
+  });
+
+  $updatebalance.val("");
+
+  location.reload();
+};
+
+$submitBtnUpdateBudget.on("click", handleFormSubmit);
