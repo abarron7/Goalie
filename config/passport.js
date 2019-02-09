@@ -11,7 +11,7 @@ module.exports = passport => {
   });
 
   passport.deserializeUser((id, done) => {
-    db.User.findByPk(id).then(user => {
+    db.Users.findByPk(id).then(user => {
       // findByPk is the new way to write findById in sequelize
       if (user) {
         done(null, user.get());
@@ -35,7 +35,7 @@ module.exports = passport => {
           return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
         };
 
-        db.User.findOne({
+        db.Users.findOne({
           where: {
             email: email
           }
@@ -53,7 +53,7 @@ module.exports = passport => {
               lastname: req.body.lastname
             };
 
-            db.User.create(data).then(newUser => {
+            db.Users.create(data).then(newUser => {
               if (!newUser) {
                 return done(null, false);
               }
@@ -83,7 +83,7 @@ module.exports = passport => {
           return bCrypt.compareSync(password, userpass);
         };
 
-        db.User.findOne({
+        db.Users.findOne({
           where: {
             email: email
           }
