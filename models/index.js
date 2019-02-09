@@ -9,7 +9,6 @@ var env = process.env.NODE_ENV || "development";
 var config = require(__dirname + "/../config/config.json")[env];
 var db = {};
 
-
 // Test if we're running development (i.e. heroku) or locally
 // Then use appropriate config setup from config.json
 if (config.use_env_variable) {
