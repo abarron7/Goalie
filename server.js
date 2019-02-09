@@ -1,22 +1,22 @@
 require("dotenv").config();
 
 // import express
-const express = require("express");
+var express = require("express");
 // import express-handlebars
-const exphbs = require("express-handlebars");
+var exphbs = require("express-handlebars");
 
 // import sequelize models
-const db = require("./models");
+var db = require("./models");
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+var app = express();
+var PORT = process.env.PORT || 3000;
 
 // PASSPORT: imports passport and express-session used with passport
-const passport = require("passport");
-const session = require("express-session");
+var passport = require("passport");
+var session = require("express-session");
 
-const passport = require("passport");
-const session = require("express-session");
+var passport = require("passport");
+var session = require("express-session");
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
@@ -37,7 +37,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Models
-const models = require("./models");
+var models = require("./models");
 
 // Routes
 require("./routes/authRoutes")(app, passport); // PASSPORT: auth routes used with passport
@@ -47,7 +47,7 @@ require("./routes/htmlRoutes")(app);
 // PASSPORT: load passport strategies
 require("./config/passport.js")(passport, models.user);
 
-const syncOptions = { force: false };
+var syncOptions = { force: false };
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
@@ -56,8 +56,8 @@ if (process.env.NODE_ENV === "test") {
 }
 
 // Starting the server, syncing our models ------------------------------------/
-db.sequelize.sync(syncOptions).then(() => {
-  app.listen(PORT, () => {
+db.sequelize.sync(syncOptions).then(function() {
+  app.listen(PORT, function() {
     console.log(
       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
       PORT,
