@@ -1,5 +1,5 @@
-const bCrypt = require("bcrypt-nodejs");
-const db = require("../models");
+var bCrypt = require("bcrypt-nodejs");
+var db = require("../models");
 
 // PASSPORT: No need to edit this file unless you want to change from email login to username login
 module.exports = passport => {
@@ -11,7 +11,7 @@ module.exports = passport => {
   });
 
   passport.deserializeUser((id, done) => {
-    db.Users.findByPk(id).then(user => {
+    db.User.findByPk(id).then(user => {
       // findByPk is the new way to write findById in sequelize
       if (user) {
         done(null, user.get());
@@ -35,7 +35,7 @@ module.exports = passport => {
           return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
         };
 
-        db.Users.findOne({
+        db.User.findOne({
           where: {
             email: email
           }
@@ -53,7 +53,7 @@ module.exports = passport => {
               lastname: req.body.lastname
             };
 
-            db.Users.create(data).then(newUser => {
+            db.User.create(data).then(newUser => {
               if (!newUser) {
                 return done(null, false);
               }
@@ -83,7 +83,7 @@ module.exports = passport => {
           return bCrypt.compareSync(password, userpass);
         };
 
-        db.Users.findOne({
+        db.User.findOne({
           where: {
             email: email
           }
