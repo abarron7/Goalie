@@ -22,8 +22,9 @@ module.exports = function(app) {
     });
   });
 
-  // Update budget
+  // Update financials ledger
   app.post("/api/financials", function(req, res) {
+    console.log("~apiRoutes - Running post")
     db.Financials.create(req.body).then(function(dbFinancials) {
       res.json(dbFinancials);
     });

@@ -27,11 +27,11 @@ module.exports = function(app) {
   // Load example page and pass in an example by id
   app.get("/users/:id", function(req, res) {
     console.log("~~Running get user request~~");
-    if (req.params.id != "POST") {
+    // if (req.params.id != "POST") {
       financialsData(req.params.id, function(userDetails) {
         res.render("financials", userDetails);
       });
-    }
+    // }
   });
 
     

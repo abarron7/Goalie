@@ -17,7 +17,7 @@ var API = {
     });
   },
   saveUser: function(users) {
-    // console.log("\n\n Running API.saveUser function.\n");
+    console.log("\n\n Running API.saveUser function.\n");
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
@@ -33,7 +33,8 @@ var API = {
       type: "GET"
     });
   },
-  updateFinancials: function(financials) {
+  saveFinancials: function(financials) {
+    console.log("\n\n Running API.saveFinancials function.\n");
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
@@ -52,33 +53,33 @@ var API = {
 };
 
 // refreshUsers gets new financials from the db and repopulates the list
-var refreshUsers = function() {
-  API.getUsers().then(function(data) {
-    var $users = data.map(function(users) {
-      var $a = $("<a>")
-        .text(users.id + " " + users.username + " " + users.balance)
-        .attr("href", "/users/" + users.id);
+// var refreshUsers = function() {
+//   API.getUsers().then(function(data) {
+//     var $users = data.map(function(users) {
+//       var $a = $("<a>")
+//         .text(users.id + " " + users.username + " " + users.balance)
+//         .attr("href", "/users/" + users.id);
 
-      var $li = $("<li>")
-        .attr({
-          class: "list-group-item",
-          "data-id": users.id
-        })
-        .append($a);
+//       var $li = $("<li>")
+//         .attr({
+//           class: "list-group-item",
+//           "data-id": users.id
+//         })
+//         .append($a);
 
-      var $button = $("<button>")
-        .addClass("btn btn-danger float-right delete")
-        .text("ｘ");
+//       var $button = $("<button>")
+//         .addClass("btn btn-danger float-right delete")
+//         .text("ｘ");
 
-      $li.append($button);
+//       $li.append($button);
 
-      return $li;
-    });
+//       return $li;
+//     });
 
-    $usersList.empty();
-    $usersList.append($users);
-  });
-};
+//     $usersList.empty();
+//     $usersList.append($users);
+//   });
+// };
 
 // handleFormSubmit is called whenever we submit a new financials
 // Save the new financials to the db and refresh the list
@@ -125,22 +126,21 @@ var handleFormSubmit = function(event) {
   alert("User Saved");
   setTimeout(function() {
     var goToProfileURL = "/users/" + newID;
-    console.log(goToProfileURL);
     window.location.href = goToProfileURL;
   }, 1000);
 };
 
 // handleDeleteBtnClick is called when an financials's delete button is clicked
 // Remove the financials from the db and refresh the list
-var handleDeleteBtnClick = function() {
-  var idToDelete = $(this)
-    .parent()
-    .attr("data-id");
+// var handleDeleteBtnClick = function() {
+//   var idToDelete = $(this)
+//     .parent()
+//     .attr("data-id");
 
-  API.deleteFinancials(idToDelete).then(function() {
-    refreshUsers();
-  });
-};
+//   API.deleteFinancials(idToDelete).then(function() {
+//     refreshUsers();
+//   });
+// };
 
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
@@ -153,7 +153,7 @@ var $updatebalance = $("#update-balance-input");
 var $submitBtnUpdate = $("#submit-update");
 
 var handleFormSubmitUpdates = function(event) {
-  console.log("LOOOOOOOOOOOOOOOOOOOOOOOOOL");
+  console.log("route is " + userid);
   event.preventDefault();
 
   var userid = $("#update-balance-input").data("route");
@@ -163,8 +163,10 @@ var handleFormSubmitUpdates = function(event) {
     balance: $updatebalance.val().trim(),
     userid: userid
   };
+  alert(updatedFinancials);
 
-  API.updateFinancials(updatedFinancials).then(function(x) {
+  API.saveFinancials(updatedFinancials).then(function(x) {
+    console.log("\n\n Running OMG OMG OMG\n");
     console.log(x);
   });
 

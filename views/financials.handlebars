@@ -10,11 +10,14 @@
             <strong>Username</strong>: {{userData.username}}</p>
           <p>
             <strong>Balance:</strong> ${{userFinancials.balance}}</p>
-          <form class="clearfix mb-4" action="POST">
+          <form class="clearfix mb-4" method="POST">
             <div class="form-group">
               <input type="text" id="update-balance-input" class="form-control" aria-describedby="update-balance"
                 placeholder="Update Your Balance" data-id={{userData.id}}>
+                <button id="submit-update" type="submit" class="btn btn-primary">Update Changes</button>
+            
             </div>
+            </form>
             <p>
               <strong>Balance Start:</strong> ${{userFinancials.balancestart}}</p>
             <p>
@@ -36,8 +39,7 @@
             <p>Average Since Start: ${{userFinancials.rossincestart}} per week</p>
             <p>Average Since Last Check-In: ${{userFinancials.rossinceprevious}} per week</p>
             <br>
-            <button id="submit-update" class="btn btn-primary">Update Changes</button>
-          </form>
+            
           <br>
           <a href="/">← Back To Home</a>
         </div>
