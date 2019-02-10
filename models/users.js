@@ -12,5 +12,5 @@ module.exports = function(sequelize, DataTypes) {
     goalamount: DataTypes.INTEGER,
     goaldate: DataTypes.STRING
   });
-  return User;
+  return Users;
 };

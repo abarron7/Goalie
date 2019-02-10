@@ -1,17 +1,13 @@
-
-
-<div id="home">
+<div id="userlogin">
   <div class="container">
     <div class="row">
       <div class="col-8 offset-2">
-        <h1>{{msg}}</h1>
-        <h2>This is our Home Page!</h2>
-        <h3>New User</h3>
-          <a href="newuser">Click here!</a>
+        <h3>Login page</h3>
+          <a href="newuser">Click here to start your own profile!</a>
         <br>
         <h3>Existing Users</h3>
-        <ul id="financials-list" class="list-group"><ul>
-            {{#each dbUsers}}
+        <ul id="users-list" class="list-group"><ul>
+            {{#each usersData}}
             <p>Username: <a href="users/{{this.id}}">{{this.username}}</a></p>
             <p>Goal: {{this.goaldescr}}</p>
             <p>Progress: {{this.goalprogress}}</p>
@@ -30,3 +26,4 @@
 
 <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 <script src="/js/index.js"></script>
+

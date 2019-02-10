@@ -4,6 +4,8 @@ require("dotenv").config();
 var express = require("express");
 // import express-handlebars
 var exphbs = require("express-handlebars");
+// import bodyparser
+var bodyParser = require("body-parser");
 
 // import sequelize models
 var db = require("./models");
@@ -22,6 +24,21 @@ var session = require("express-session");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+
+// Handlebars
+app.engine(
+  "handlebars",
+  exphbs({
+    defaultLayout: "main"
+  })
+);
+app.set("view engine", "handlebars");
 
 // PASSPORT: Middleware for Passport
 app.use(
@@ -45,7 +62,7 @@ require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
 // PASSPORT: load passport strategies
-require("./config/passport.js")(passport, models.user);
+require("./config/passport.js")(passport, models.users);
 
 var syncOptions = { force: false };
 

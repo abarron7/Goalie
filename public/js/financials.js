@@ -1,78 +1,90 @@
-/// dependencies
-var moment = require("moment");
+// PURPOSE: To perform calculations (locally) based on the budget, income, etc.
+// Performing these calculations locally reduces the number of calls we need to make to our database.
+
+// Pull in dependencies
 var db = require("../../models");
+var moment = require("moment");
 
-module.exports = function(id, callback) {
+// When get function recieved for a user's ID, gather their personal data and run calculations based off of that, then return to htmlRoutes file to pass into handlebars files
+module.exports = function(userid, callback) {
+  console.log("running callback function to run calcs");
+  if (userid == "POST") {
+    return console.log("userid is " + userid + ", error");
+    console.log("cancelling callback function to run calcs");
+  }
+  // Query User database.  Return the first entry that matches the userID.
   db.Users.findOne({
-    where: { id: id }
+    where: { id: userid }
   }).then(function(userData) {
+    // Query Financials database.  Return every entry that matches the userID.
     db.Financials.findAll({
-      where: { userid: id }
-    }).then(function(dbFin) {
-      var userFinancials = {
-        balancestart: 99999999,
-        balanceprevious: 99999999,
-        balance: 9999999
-      };
-      for (i = 0; i < dbFin.length; i++) {
-        userFinancials.balancestart = dbFin[0].balance;
-        if (dbFin.length > 1) {
-          var x = dbFin.length - 2;
-          userFinancials.balanceprevious = dbFin[x].balance;
+      where: { userid: userid }
+    }).then(function(finData) {
+      var userFinancials = {};
+      // Loop through every financial data entry for this user
+      for (i = 0; i < finData.length; i++) {
+        // BALANCE
+        // Get start balance (the first entry)
+        userFinancials.balancestart = finData[0].balance;
+        // Get previous balance
+        if (finData.length > 1) {
+          var x = finData.length - 2;
+          userFinancials.balanceprevious = finData[x].balance;
         } else {
-          userFinancials.balanceprevious = dbFin[0].balance;
+          userFinancials.balanceprevious = finData[0].balance;
         }
-        var x = dbFin.length - 1;
-        userFinancials.balance = dbFin[x].balance;
-        userFinancials.income = dbFin[x].income;
-        userFinancials.rosRecommended = (userFinancials.income * 0.15).toFixed(
-          2
-        );
-
-        // RATE OF SAVINGS
-        // Since start
-        userFinancials.rosSinceStart = (
-          userFinancials.balance - userFinancials.balancestart
-        ).toFixed(2);
-        // Since last
-        userFinancials.rosSincePrevious = (
-          userFinancials.balance - userFinancials.balanceprevious
-        ).toFixed(2);
+        // Get current balance
+        var x = finData.length - 1;
+        userFinancials.balance = finData[x].balance;
+        // INCOME
+        // Get income
+        userFinancials.income = finData[x].income;
       }
-
-      console.log(userData);
-      // HOW DO I ACCESS THIS OBJECT???
+      // RATE OF SAVINGS & PROGRESS
+      // Calculate rate of savings (recommended rate)
+      userFinancials.rosrecommended = (userFinancials.income * 0.15).toFixed(2);
+      // Calculate rate of savings (rate since start)
+      userFinancials.rossincestart = (
+        userFinancials.balance - userFinancials.balancestart
+      ).toFixed(2);
+      // Calculate rate of savings (since last entry)
+      userFinancials.rossinceprevious = (
+        userFinancials.balance - userFinancials.balanceprevious
+      ).toFixed(2);
+      // Calculate progress
       userFinancials.progress = (
         (userFinancials.balance / userData.goalamount) *
         100
       ).toFixed(1);
 
       // calculate savings per week
-      // var timeBefore = moment([2019, 0, 1]);
+      var timeBefore = moment();
       // console.log(timeBefore);
       var timeNow = moment();
-      console.log(timeNow);
-      // var timeDifference = timeNow.diff(timeBefore, "days");
-      // console.log(timeDifference); //36 days
+      var timeDifference = timeNow.diff(timeBefore, "days");
       // amount saved since last time, divided by, time since last check-in, equals savings per day
       // times by seven equals savings per week
 
-      // calculate
-
-      var goalDateDaysToGo = (
+      // Calculate days remaining
+      var goalDaysRemaining = (
         ((userFinancials.balance * userFinancials.progress) /
-          userFinancials.rosRecommended) *
+          userFinancials.rosrecommended) *
         7
       ).toFixed(0);
 
-      var goalDate = moment()
-        .add(goalDateDaysToGo, "days")
+      userData.goaldate = moment()
+        .add(goalDaysRemaining, "days")
         .format("dddd, MMMM Do YYYY");
-      // console.log(goalDate);
-      userData.goaldate = goalDate;
+
+      userFinancials.goaltimeremaining = goalDaysRemaining;
+
+      var userDetails = {
+        userFinancials: userFinancials,
+        userData: userData
+      };
 
       // console.log(userFinancials);
-      callback(userFinancials);
+      callback(userDetails);
     });
   });
 };

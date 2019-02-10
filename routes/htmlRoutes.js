@@ -1,37 +1,37 @@
 var db = require("../models");
 var financialsData = require('../public/js/financials');
 
-
-
 module.exports = function(app) {
   // Load index page
   app.get("/", function(req, res) {
-    db.Users.findAll({}).then(function(dbUsers) {
+    db.Users.findAll({}).then(function(usersData) {
       let logout = false;
       if (req.user) {
         logout = true;
       }
       res.render("index", {
-        msg: "Welcome!",
-        dbUsers: dbUsers
+        // msg: "Welcome!",
+        usersData: usersData
       });
     });
   });
 
   app.get("/newuser", function(req, res) {
-    db.Users.findAll({}).then(function(dbUsers) {
+    db.Users.findAll({}).then(function(usersData) {
       res.render("newuser", {
-        dbUsers: dbUsers
+        usersData: usersData
       });
     });
   });
 
   // Load example page and pass in an example by id
   app.get("/users/:id", function(req, res) {
-    financialsData(req.params.id, function(data) {
-      res.render("financials", data);
-    }); 
-   
+    console.log("~~Running get user request~~");
+    if (req.params.id != "POST") {
+      financialsData(req.params.id, function(userDetails) {
+        res.render("financials", userDetails);
+      });
+    }
   });
 
     

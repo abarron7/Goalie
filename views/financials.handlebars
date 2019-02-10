@@ -10,30 +10,36 @@
             <strong>Username</strong>: {{userData.username}}</p>
           <p>
             <strong>Balance:</strong> ${{userFinancials.balance}}</p>
-             <form class="clearfix mb-4" action="POST">
-              <div class="form-group">
-                <input type="text" id="update-balance" class="form-control" aria-describedby="update-balance" placeholder="Update Your Balance">
-                <button id="submit-update-balance" class="btn btn-primary">Update</button>
-              </div>
-          <p>
-            <strong>Balance Start:</strong> ${{balancestart}}</p>
-          <p>
-            <strong>Balance Previous:</strong> ${{userFinancials.balanceprevious}}</p>
-          <p>
-            <strong>Income</strong>: ${{userFinancials.income}} per week</p>
-          <p>
-            <strong>Goal Description:</strong> {{userData.goaldescr}}</p>
-          <p>
-            <strong>Goal Amount:</strong> ${{userData.goalamount}}</p>
-          <p>
-            <strong>Progress:</strong> {{userFinancials.progress}}%</p>
-          <p>
-            <strong>Projected Goal Date:</strong> {{userData.goaldate}}</p>
-          <strong>Rate Of Saving:</strong>
-            <p>Recommended (15%): ${{userFinancials.rosRecommended}} per week</p>
-            <p>Average Since Start: ${{userFinancials.rosSinceStart}} per week</p>
-            <p>Average Since Last Check-In: ${{userFinancials.rosSincePrevious}} per week</p>
-            <a href="/">← Back To Home</a>
+          <form class="clearfix mb-4" action="POST">
+            <div class="form-group">
+              <input type="text" id="update-balance-input" class="form-control" aria-describedby="update-balance"
+                placeholder="Update Your Balance" data-id={{userData.id}}>
+            </div>
+            <p>
+              <strong>Balance Start:</strong> ${{userFinancials.balancestart}}</p>
+            <p>
+              <strong>Balance Previous:</strong> ${{userFinancials.balanceprevious}}</p>
+            <p>
+              <strong>Income</strong>: ${{userFinancials.income}} per week</p>
+            <p>
+              <strong>Goal Description:</strong> {{userData.goaldescr}}</p>
+            <p>
+              <strong>Goal Amount:</strong> ${{userData.goalamount}}</p>
+            <p>
+              <strong>Progress:</strong> {{userFinancials.progress}}%</p>
+            <p>
+              <strong>Time Until Goal Reached:</strong> {{userFinancials.goaltimeremaining}} days</p>
+            <p>
+              <strong>Projected Goal Date:</strong> {{userData.goaldate}}</p>
+            <strong>Rate Of Saving:</strong>
+            <p>Recommended (15%): ${{userFinancials.rosrecommended}} per week</p>
+            <p>Average Since Start: ${{userFinancials.rossincestart}} per week</p>
+            <p>Average Since Last Check-In: ${{userFinancials.rossinceprevious}} per week</p>
+            <br>
+            <button id="submit-update" class="btn btn-primary">Update Changes</button>
+          </form>
+          <br>
+          <a href="/">← Back To Home</a>
         </div>
       </div>
     </div>

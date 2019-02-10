@@ -6,7 +6,7 @@ var $goaldescr = $("#input-goaldescr");
 var $goalamount = $("#input-goalamount");
 
 var $submitBtn = $("#submit");
-var $financialsList = $("#financials-list");
+var $usersList = $("#users-list");
 
 // The API object contains methods for each kind of request we'll make
 var API = {
@@ -16,8 +16,8 @@ var API = {
       type: "GET"
     });
   },
-  saveUsers: function(users) {
-    // console.log("\n\n Running API.saveUsers function.\n");
+  saveUser: function(users) {
+    // console.log("\n\n Running API.saveUser function.\n");
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
@@ -27,7 +27,13 @@ var API = {
       data: JSON.stringify(users)
     });
   },
-  saveFinancials: function(financials) {
+  getFinancials: function() {
+    return $.ajax({
+      url: "api/financials/" + id,
+      type: "GET"
+    });
+  },
+  updateFinancials: function(financials) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
@@ -35,12 +41,6 @@ var API = {
       type: "POST",
       url: "api/financials",
       data: JSON.stringify(financials)
-    });
-  },
-  getFinancials: function() {
-    return $.ajax({
-      url: "api/financials/" + id,
-      type: "GET"
     });
   },
   deleteFinancials: function(id) {
@@ -75,8 +75,8 @@ var refreshUsers = function() {
       return $li;
     });
 
-    $financialsList.empty();
-    $financialsList.append($users);
+    $usersList.empty();
+    $usersList.append($users);
   });
 };
 
@@ -103,7 +103,7 @@ var handleFormSubmit = function(event) {
   }
 
   var newID;
-  API.saveUsers(users).then(function(x) {
+  API.saveUser(users).then(function(x) {
     newID = x.id;
     console.log("new user ID is " + newID);
 
@@ -122,7 +122,12 @@ var handleFormSubmit = function(event) {
   $goaldescr.val("");
   $goalamount.val("");
 
-  // SOMEHOW GO TO HOME PAGE OR BETTER YET, THE NEW PERSON'S PAGE
+  alert("User Saved");
+  setTimeout(function() {
+    var goToProfileURL = "/users/" + newID;
+    console.log(goToProfileURL);
+    window.location.href = goToProfileURL;
+  }, 1000);
 };
 
 // handleDeleteBtnClick is called when an financials's delete button is clicked
@@ -139,45 +144,31 @@ var handleDeleteBtnClick = function() {
 
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
-$financialsList.on("click", ".delete", handleDeleteBtnClick);
+$usersList.on("click", ".delete", handleDeleteBtnClick);
 
 // Input field
-var $updatebalance = $("#update-balance");
+var $updatebalance = $("#update-balance-input");
 
 // Button
-var $submitBtnUpdateBudget = $("#submit-update-budget");
+var $submitBtnUpdate = $("#submit-update");
 
-var handleFormSubmit = function(event) {
+var handleFormSubmitUpdates = function(event) {
+  console.log("LOOOOOOOOOOOOOOOOOOOOOOOOOL");
   event.preventDefault();
 
-  var newBalance = {
-    balance: $updatebalance.val().trim()
+  var userid = $("#update-balance-input").data("route");
+  console.log("route is " + userid);
+
+  var updatedFinancials = {
+    balance: $updatebalance.val().trim(),
+    userid: userid
   };
 
-  console.log("newbal is !!!!!!!!!!!" + newBalance.balance);
-
-  // if (!newBalance) {
-  //   alert("You must enter your username and balance!");
-  //   return;
-  // }
-
-  API.saveUsers(users).then(function(x) {
-    newID = x.id;
-    console.log("new user ID is " + newID);
-
-    financials.userid = newID;
-    console.log(financials.userid);
-
-    API.saveFinancials(financials).then(function(x) {
-      console.log("Running API.saveFinancials(financials)");
-      console.log("new financial entry ID is " + x.id);
-      refreshUsers();
-    });
+  API.updateFinancials(updatedFinancials).then(function(x) {
+    console.log(x);
   });
 
   $updatebalance.val("");
-
-  location.reload();
 };
 
-$submitBtnUpdateBudget.on("click", handleFormSubmit);
+$submitBtnUpdate.on("click", handleFormSubmitUpdates);
