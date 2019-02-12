@@ -83,8 +83,10 @@ module.exports = function(userid, callback) {
         userData: userData
       };
 
-      // console.log(userFinancials);
+      console.log(userFinancials);
+      console.log("finished callback function to run calcs");
       callback(userDetails);
+      
     });
   });
 };
