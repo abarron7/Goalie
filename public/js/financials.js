@@ -8,17 +8,22 @@ var moment = require("moment");
 // When get function recieved for a user's ID, gather their personal data and run calculations based off of that, then return to htmlRoutes file to pass into handlebars files
 module.exports = function(userid, callback) {
   console.log("running callback function to run calcs");
-  if (userid == "POST") {
+  if (userid === "POST") {
     return console.log("userid is " + userid + ", error");
+
     console.log("cancelling callback function to run calcs");
   }
   // Query User database.  Return the first entry that matches the userID.
   db.Users.findOne({
-    where: { id: userid }
+    where: {
+      id: userid
+    }
   }).then(function(userData) {
     // Query Financials database.  Return every entry that matches the userID.
     db.Financials.findAll({
-      where: { userid: userid }
+      where: {
+        userid: userid
+      }
     }).then(function(finData) {
       var userFinancials = {};
       // Loop through every financial data entry for this user
@@ -86,7 +91,6 @@ module.exports = function(userid, callback) {
       console.log(userFinancials);
       console.log("finished callback function to run calcs");
       callback(userDetails);
-      
     });
   });
 };
