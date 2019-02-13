@@ -17,9 +17,6 @@ var PORT = process.env.PORT || 3000;
 var passport = require("passport");
 var session = require("express-session");
 
-var passport = require("passport");
-var session = require("express-session");
-
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -27,7 +24,7 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
-    extended: true
+    extended: false
   })
 );
 

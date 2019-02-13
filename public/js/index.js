@@ -40,13 +40,13 @@ var API = {
         "Content-Type": "application/json"
       },
       type: "POST",
-      url: "api/financials",
+      url: "../api/financials",
       data: JSON.stringify(financials)
     });
   },
   deleteFinancials: function(id) {
     return $.ajax({
-      url: "api/financials/" + id,
+      url: "../../api/financials" + id,
       type: "DELETE"
     });
   }
@@ -144,33 +144,42 @@ var handleFormSubmit = function(event) {
 
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
-$usersList.on("click", ".delete", handleDeleteBtnClick);
+// $usersList.on("click", ".delete", handleDeleteBtnClick);
+var $updatebalance;
 
 // Input field
-var $updatebalance = $("#update-balance-input");
+$(document).on("change", "#update-balance-input", function() {
+  $updatebalance = $("#update-balance-input").val();
+  console.log("value updated to " + $updatebalance);
+});
 
 // Button
 var $submitBtnUpdate = $("#submit-update");
 
 var handleFormSubmitUpdates = function(event) {
+  console.log("running handleFormSubmitUpdates");
   console.log("route is " + userid);
   event.preventDefault();
 
-  var userid = $("#update-balance-input").data("route");
+  var userid = $("#update-balance-input").data("id");
   console.log("route is " + userid);
 
   var updatedFinancials = {
-    balance: $updatebalance.val().trim(),
+    balance: $updatebalance,
     userid: userid
   };
-  alert(updatedFinancials);
+  // alert(updatedFinancials);
 
   API.saveFinancials(updatedFinancials).then(function(x) {
     console.log("\n\n Running OMG OMG OMG\n");
     console.log(x);
+    setTimeout(function() {
+      var goToProfileURL = "/users/" + userid;
+      window.location.href = goToProfileURL;
+    }, 1000);
   });
 
-  $updatebalance.val("");
+  $("#update-balance-input").val("");
 };
 
 $submitBtnUpdate.on("click", handleFormSubmitUpdates);

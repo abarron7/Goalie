@@ -26,19 +26,24 @@ module.exports = function(userid, callback) {
         // BALANCE
         // Get start balance (the first entry)
         userFinancials.balancestart = finData[0].balance;
+        // Get current balance
+        var x = finData.length - 1;
+        userFinancials.balance = finData[x].balance;
         // Get previous balance
         if (finData.length > 1) {
           var x = finData.length - 2;
           userFinancials.balanceprevious = finData[x].balance;
+          userFinancials.balanceremaining =
+            userData.goalamount - userFinancials.balance;
         } else {
           userFinancials.balanceprevious = finData[0].balance;
+          userFinancials.balanceremaining =
+            userData.goalamount - userFinancials.balance;
         }
-        // Get current balance
-        var x = finData.length - 1;
-        userFinancials.balance = finData[x].balance;
+
         // INCOME
         // Get income
-        userFinancials.income = finData[x].income;
+        userFinancials.income = finData[0].income;
       }
       // RATE OF SAVINGS & PROGRESS
       // Calculate rate of savings (recommended rate)
@@ -66,12 +71,16 @@ module.exports = function(userid, callback) {
       // times by seven equals savings per week
 
       // Calculate days remaining
+      console.log("balance is " + userFinancials.balance);
+      console.log("progress is " + userFinancials.progress);
+      console.log("ros " + userFinancials.rosrecommended);
       var goalDaysRemaining = (
-        ((userFinancials.balance * userFinancials.progress) /
-          userFinancials.rosrecommended) *
+        (userFinancials.balanceremaining / userFinancials.rosrecommended) *
         7
       ).toFixed(0);
 
+      console.log("days remaining " + goalDaysRemaining);
+      userData.goaldate = 0;
       userData.goaldate = moment()
         .add(goalDaysRemaining, "days")
         .format("dddd, MMMM Do YYYY");
@@ -86,7 +95,6 @@ module.exports = function(userid, callback) {
       console.log(userFinancials);
       console.log("finished callback function to run calcs");
       callback(userDetails);
-      
     });
   });
 };
