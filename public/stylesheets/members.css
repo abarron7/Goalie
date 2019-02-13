@@ -1,0 +1,17 @@
+.avatar {
+    margin-top: -70px;
+    padding-bottom: 20px;
+    
+  }
+  .avatar img {
+    width: 15%;
+    height: auto;
+    border: 8px solid darkred;
+    border-bottom: 1px #F2F6FA;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    padding: 5px;
+    background: lightgrey;
+    -webkit-box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+    box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
+  }

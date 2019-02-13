@@ -6,6 +6,9 @@ var express = require("express");
 var exphbs = require("express-handlebars");
 // import bodyparser
 var bodyParser = require("body-parser");
+var session = require("express-session");
+// Requiring passport as we've configured it
+var passport = require("./config/passport");
 
 // import sequelize models
 var db = require("./models");
@@ -15,21 +18,16 @@ var PORT = process.env.PORT || 3000;
 
 // PASSPORT: imports passport and express-session used with passport
 var passport = require("passport");
-var session = require("express-session");
 
-var passport = require("passport");
-var session = require("express-session");
-
-// Middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.static("public"));
+// We need to use sessions to keep track of our user's login status
 app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
+  session({ secret: "keyboard cat", resave: true, saveUninitialized: true })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Handlebars
 app.engine(
@@ -48,10 +46,6 @@ app.use(
     saveUninitialized: true
   })
 );
-
-// PASSPORT: Initialize passport and the passport session
-app.use(passport.initialize());
-app.use(passport.session());
 
 //Models
 var models = require("./models");
