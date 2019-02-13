@@ -1,5 +1,8 @@
+
+var passport = require("passport");
 var db = require("../models");
-var passport = require("../config/passport");
+// var passport = require("../config/passport");
+
 
 module.exports = function(app) {
   // Get all examples
