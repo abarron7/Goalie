@@ -86,7 +86,6 @@ module.exports = function(userid, callback) {
       console.log(userFinancials);
       console.log("finished callback function to run calcs");
       callback(userDetails);
-      
     });
   });
 };

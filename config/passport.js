@@ -1,9 +1,13 @@
 var bCrypt = require("bcrypt-nodejs");
+//We will need the models folder to check passport against
 var db = require("../models");
 
 // PASSPORT: No need to edit this file unless you want to change from email login to username login
 module.exports = function(passport) {
   var LocalStrategy = require("passport-local").Strategy;
+
+  //we import passport packages required for authentication
+  var passport = require("passport");
 
   passport.serializeUser(function(user, done) {
     console.log("user id =", user.id);
@@ -21,26 +25,29 @@ module.exports = function(passport) {
     });
   });
 
+  // Telling passport we want to use a Local Strategy. In other words, we want login with a username/email and password
   passport.use(
     "local-signup",
     new LocalStrategy(
+      // Our user will sign in using an email, rather than a "username"
       {
         usernameField: "email",
         passwordField: "password",
-        passReqToCallback: true // allows us to pass back the entire request to the callback
+        passReqToCallback: true, // allows us to pass back the entire request to the callback
+        usernameField: "email"
       },
 
       function(req, email, password, done) {
         var generateHash = function(password) {
           return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
         };
-
         db.User.findOne({
           where: {
             email: email
           }
-        }).then(function(user) {
-          if (user) {
+        }).then(function(userXXX) {
+          // If there's no user with the given email
+          if (!userXXX) {
             return done(null, false, {
               message: "That email is already taken"
             });
@@ -82,7 +89,6 @@ module.exports = function(passport) {
         var isValidPassword = function(userpass, password) {
           return bCrypt.compareSync(password, userpass);
         };
-
         db.User.findOne({
           where: {
             email: email
@@ -111,4 +117,14 @@ module.exports = function(passport) {
       }
     )
   );
+
+  // In order to help keep authentication state across HTTP requests,
+  // Sequelize needs to serialize and deserialize the user
+  // Just consider this part boilerplate needed to make it all work
+  passport.serializeUser(function(user, cb) {
+    cb(null, user);
+  });
+  passport.deserializeUser(function(obj, cb) {
+    cb(null, obj);
+  });
 };
