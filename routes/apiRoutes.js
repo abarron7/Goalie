@@ -26,7 +26,13 @@ module.exports = function(app) {
 
   // Update financials ledger
   app.post("/api/financials", function(req, res) {
+    console.log("req.body");
+    console.log(JSON.stringify(req.body));
+    console.log(req.params.id);
+
     db.Financials.create(req.body).then(function(dbFinancials) {
+      console.log(dbFinancials);
+      // res.set("Content-Type", "text/html");
       res.json(dbFinancials);
     });
   });

@@ -28,6 +28,7 @@ module.exports = function(app) {
   app.get("/users/:id", function(req, res) {
     console.log("~~Running get user request~~");
     // if (req.params.id != "POST") {
+      console.log("~~Running get user request~~");
       financialsData(req.params.id, function(userDetails) {
         res.render("financials", userDetails);
       });
