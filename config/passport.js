@@ -45,9 +45,9 @@ module.exports = function(passport) {
           where: {
             email: email
           }
-        }).then(function(userXXX) {
+        }).then(function(Users) {
           // If there's no user with the given email
-          if (!userXXX) {
+          if (!Users) {
             return done(null, false, {
               message: "That email is already taken"
             });
