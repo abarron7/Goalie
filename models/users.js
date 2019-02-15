@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-  var Users = sequelize.define("Users", {
+  var UsersX = sequelize.define("UsersX", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -12,5 +12,5 @@ module.exports = function(sequelize, DataTypes) {
     goalamount: DataTypes.INTEGER,
     goaldate: DataTypes.STRING
   });
-  return Users;
+  return UsersX;
 };
